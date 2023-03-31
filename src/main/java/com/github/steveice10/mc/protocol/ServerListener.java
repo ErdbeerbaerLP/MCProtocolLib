@@ -86,7 +86,7 @@ public class ServerListener extends SessionAdapter {
                         break;
                     case LOGIN:
                         protocol.setState(ProtocolState.LOGIN);
-                        if(!protocol.getCodec().allowingAllVersions()) {
+                        if(!session.getFlag("allowAllVersions", false)) {
                             if (intentionPacket.getProtocolVersion() > protocol.getCodec().getProtocolVersion()) {
                                 session.disconnect("Outdated server! I'm still on " + protocol.getCodec().getMinecraftVersion() + ".");
                             } else if (intentionPacket.getProtocolVersion() < protocol.getCodec().getProtocolVersion()) {
