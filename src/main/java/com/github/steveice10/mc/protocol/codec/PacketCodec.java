@@ -21,6 +21,7 @@ public class PacketCodec {
 
     @Getter
     private final Supplier<MinecraftCodecHelper> helperFactory;
+    private boolean allowsAllVersions = false;
 
     public PacketStateCodec getCodec(ProtocolState protocolState) {
         return this.stateProtocols.get(protocolState);
@@ -39,6 +40,13 @@ public class PacketCodec {
         builder.helperFactory = this.helperFactory;
 
         return builder;
+    }
+
+    public void setAllowsAllVersions(boolean allowsAllVersions) {
+        this.allowsAllVersions = allowsAllVersions;
+    }
+    public boolean allowingAllVersions() {
+        return allowsAllVersions;
     }
 
     public static class Builder {

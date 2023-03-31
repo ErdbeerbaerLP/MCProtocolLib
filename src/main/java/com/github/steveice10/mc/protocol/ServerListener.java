@@ -86,12 +86,13 @@ public class ServerListener extends SessionAdapter {
                         break;
                     case LOGIN:
                         protocol.setState(ProtocolState.LOGIN);
-                        if (intentionPacket.getProtocolVersion() > protocol.getCodec().getProtocolVersion()) {
-                            session.disconnect("Outdated server! I'm still on " + protocol.getCodec().getMinecraftVersion() + ".");
-                        } else if (intentionPacket.getProtocolVersion() < protocol.getCodec().getProtocolVersion()) {
-                            session.disconnect("Outdated client! Please use " + protocol.getCodec().getMinecraftVersion() + ".");
+                        if(!protocol.getCodec().allowingAllVersions()) {
+                            if (intentionPacket.getProtocolVersion() > protocol.getCodec().getProtocolVersion()) {
+                                session.disconnect("Outdated server! I'm still on " + protocol.getCodec().getMinecraftVersion() + ".");
+                            } else if (intentionPacket.getProtocolVersion() < protocol.getCodec().getProtocolVersion()) {
+                                session.disconnect("Outdated client! Please use " + protocol.getCodec().getMinecraftVersion() + ".");
+                            }
                         }
-
                         break;
                     default:
                         throw new UnsupportedOperationException("Invalid client intent: " + intentionPacket.getIntent());
